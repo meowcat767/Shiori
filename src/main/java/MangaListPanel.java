@@ -1,3 +1,5 @@
+
+
 import api.MangaDexClient;
 import model.Manga;
 
@@ -13,20 +15,36 @@ public class MangaListPanel extends JPanel {
     private final MangaDexClient api = new MangaDexClient();
     private final Consumer<Manga> onSelect;
 
+    private final JLabel loadingLabel = new JLabel("Searching...", SwingConstants.CENTER);
+    private final JTextField searchField = new JTextField();
+
     public MangaListPanel(Consumer<Manga> onSelect) {
         this.onSelect = onSelect;
 
         setLayout(new BorderLayout());
 
-        JTextField searchField = new JTextField();
+        // Search box
         add(searchField, BorderLayout.NORTH);
 
+        // Manga list scroll pane
         add(new JScrollPane(list), BorderLayout.CENTER);
 
+        // List selection triggers the consumer
+        list.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && list.getSelectedValue() != null) {
+                this.onSelect.accept(list.getSelectedValue());
+            }
+        });
+
+        // Search action
         searchField.addActionListener(e -> {
             String query = searchField.getText().trim();
             if (query.isEmpty()) return;
 
+            // Show loading label while searching
+            showLoading();
+
+            // Clear previous results
             model.clear();
 
             new SwingWorker<List<Manga>, Void>() {
@@ -37,23 +55,47 @@ public class MangaListPanel extends JPanel {
 
                 @Override
                 protected void done() {
+                    hideLoading();
                     try {
-                        for (Manga m : get()) model.addElement(m);
+                        List<Manga> results = get();
+                        for (Manga m : results) model.addElement(m);
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(
+                                MangaListPanel.this,
+                                "Failed to search manga: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
                     }
                 }
             }.execute();
         });
-
-        list.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting() && list.getSelectedValue() != null) {
-                onSelect.accept(list.getSelectedValue());
-            }
-        });
     }
 
+    // Optional no-arg constructor for testing
     public MangaListPanel() {
         this(manga -> {});
+    }
+
+    // --- Loading label helpers ---
+    private void showLoading() {
+        // Remove current center component (the list scroll pane)
+        Component center = ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER);
+        if (center != null) remove(center);
+
+        loadingLabel.setFont(loadingLabel.getFont().deriveFont(18f));
+        add(loadingLabel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }
+
+    private void hideLoading() {
+        // Remove current center component (the loading label)
+        Component center = ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.CENTER);
+        if (center != null) remove(center);
+
+        add(new JScrollPane(list), BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 }

@@ -44,6 +44,7 @@ public class ReaderPanel extends JPanel {
         pagesPanel.setLayout(new BoxLayout(pagesPanel, BoxLayout.Y_AXIS));
         pagesPanel.setBackground(Color.BLACK);
 
+
         JScrollPane scrollPane = new JScrollPane(pagesPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBorder(null);
@@ -204,6 +205,18 @@ public class ReaderPanel extends JPanel {
     }
 
     private void refreshZoom() {
+        JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, pagesPanel);
+        double relativeScroll = 0;
+        int viewWidth = 0;
+        if (scrollPane != null) {
+            JScrollBar vertical = scrollPane.getVerticalScrollBar();
+            int max = vertical.getMaximum() - vertical.getVisibleAmount();
+            if (max > 0) {
+                relativeScroll = (double) vertical.getValue() / max;
+            }
+            viewWidth = scrollPane.getViewport().getWidth();
+        }
+
         for (Component comp : pagesPanel.getComponents()) {
             if (comp instanceof JLabel label && label.getClientProperty("originalIcon") instanceof ImageIcon originalIcon) {
                 label.setIcon(scaleIcon(originalIcon));
@@ -211,6 +224,23 @@ public class ReaderPanel extends JPanel {
         }
         pagesPanel.revalidate();
         pagesPanel.repaint();
+
+        if (scrollPane != null) {
+            final double finalRelativeScroll = relativeScroll;
+            final int finalViewWidth = viewWidth;
+            SwingUtilities.invokeLater(() -> {
+                // Adjust for horizontal scroll to keep it centered if it was centered
+                JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
+                int newMaxH = horizontal.getMaximum() - horizontal.getVisibleAmount();
+                if (newMaxH > 0) {
+                    horizontal.setValue(newMaxH / 2);
+                }
+
+                JScrollBar vertical = scrollPane.getVerticalScrollBar();
+                int max = vertical.getMaximum() - vertical.getVisibleAmount();
+                vertical.setValue((int) (finalRelativeScroll * max));
+            });
+        }
     }
 
     public void clearCache() {

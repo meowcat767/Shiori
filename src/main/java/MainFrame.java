@@ -3,6 +3,8 @@ import model.Manga;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 public class MainFrame extends JFrame {
 
@@ -82,10 +84,10 @@ public class MainFrame extends JFrame {
                 Shift + Space: Page Up
                 Down Arrow: Scroll Down
                 Up Arrow: Scroll Up
-                + : Zoom In
+                + or = : Zoom In
                 - : Zoom Out
                 0 : Reset Zoom
-                Ctrl + Mouse Wheel: Zoom In/Out
+                Ctrl + (+/-/0/Wheel): Zoom In/Out/Reset
                 """;
         JOptionPane.showMessageDialog(this, shortcuts, "Keyboard Shortcuts", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -151,8 +153,16 @@ public class MainFrame extends JFrame {
     }
 
     private void setupZoomKeys() {
+        // Zoom In: '+' key, '=', and 'Ctrl +' or 'Ctrl ='
         reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke('+'), "zoomIn");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke('='), "zoomIn");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, InputEvent.CTRL_DOWN_MASK), "zoomIn");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, InputEvent.CTRL_DOWN_MASK), "zoomIn");
+
         reader.getActionMap().put("zoomIn", new AbstractAction() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -160,8 +170,14 @@ public class MainFrame extends JFrame {
             }
         });
 
+        // Zoom Out: '-' key and 'Ctrl -'
         reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke('-'), "zoomOut");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, InputEvent.CTRL_DOWN_MASK), "zoomOut");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, InputEvent.CTRL_DOWN_MASK), "zoomOut");
+
         reader.getActionMap().put("zoomOut", new AbstractAction() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -169,8 +185,14 @@ public class MainFrame extends JFrame {
             }
         });
 
+        // Reset Zoom: '0' and 'Ctrl 0'
         reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke('0'), "resetZoom");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_0, InputEvent.CTRL_DOWN_MASK), "resetZoom");
+        reader.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, InputEvent.CTRL_DOWN_MASK), "resetZoom");
+
         reader.getActionMap().put("resetZoom", new AbstractAction() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
