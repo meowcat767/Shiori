@@ -9,20 +9,22 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         JSplitPane splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                createSidebar();
-                new ReaderPanel();
+                createSidebar(),
+                new ReaderPanel()
         );
         splitPane.setDividerLocation(150);
         splitPane.setResizeWeight(0);
         add(splitPane);
+        UIManager.put("ScrollBar.thumb", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.track", Color.BLACK);
     }
-    private JSplitPane createSidebar() {
+    private JPanel createSidebar() {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("Libary");
         panel.add(title, BorderLayout.NORTH);
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Manga", new MangaListPanel());
-        tabs.add("Chapters", new ChapterListPane());
+        tabs.add("Chapters", new ChapterListPanel());
         panel.add(tabs, BorderLayout.CENTER);
         return panel;
     }
