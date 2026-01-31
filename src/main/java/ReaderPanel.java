@@ -85,7 +85,7 @@ public class ReaderPanel extends JPanel {
     }
 
     public void addBookmark() {
-        if (bookmarkStore != null) {
+        if (bookmarkStore == null) {
             JOptionPane.showMessageDialog(this, "Bookmark system not initialised!", "Fault", JOptionPane.ERROR_MESSAGE);
             return;
         }

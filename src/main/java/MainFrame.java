@@ -17,6 +17,15 @@ public class MainFrame extends JFrame {
     private final ChapterListPanel chapterList =
             new ChapterListPanel(chapter -> reader.loadChapter(api, chapter, currentManga));
 
+
+    private JPanel createBookmarksPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        DefaultListModel<String> bookmarksListModel = new DefaultListModel<>();
+        JList<String> bookmarksList = new JList<>(bookmarksListModel);
+        panel.add(new JScrollPane(bookmarksList), BorderLayout.CENTER);
+        return panel;
+    }
+
     public MainFrame() {
         super("Shiori");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -27,12 +36,15 @@ public class MainFrame extends JFrame {
         Path bookmarksPath = Paths.get(System.getProperty("user.home"), ".shiori", "bookmarks.json");
         BookmarkStore bookmarkStore = new BookmarkStore(bookmarksPath);
 
-        MangaListPanel mangaList = new MangaListPanel(manga -> chapterList.loadChapters(manga.id()));
+        MangaListPanel mangaList = new MangaListPanel(manga -> {
+            this.currentManga = manga;
+            chapterList.loadChapters(manga.id());
+        });
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Manga", mangaList);
         tabs.add("Chapters", chapterList);
-        tabs.add("Bookmarks", bookmarksPanel);
+        tabs.add("Bookmarks", createBookmarksPanel());
 
         JSplitPane split = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
@@ -51,6 +63,7 @@ public class MainFrame extends JFrame {
 
         setupMenu();
     }
+
 
     private void setupMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -83,7 +96,15 @@ public class MainFrame extends JFrame {
     }
 
     private void addBookmark() {
+        if (currentManga == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a manga first to add a bookmark.",
+                    "No Manga Selected",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         String mangaId = currentManga.id();
+
     }
 
     private void showAbout() {
