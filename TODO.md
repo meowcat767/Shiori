@@ -1,7 +1,7 @@
 - [x] 3-5 page buffering (just cache)
 - [x] bookmarks
 - [] auto chapter release notification
-- [] resume from page
+- [x] resume from page
 - [] better caching
 - [] actual logging that isn't System.out.println();
 - [] recent mangas (ties with resume from page)

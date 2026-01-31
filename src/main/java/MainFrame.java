@@ -20,6 +20,7 @@ public class MainFrame extends JFrame {
     private final ChapterListPanel chapterList =
             new ChapterListPanel(chapter -> reader.loadChapter(api, chapter, currentManga));
     private BookmarkStore bookmarkStore;
+    private reading.ReadingProgressStore readingProgressStore;
 
 
     private JPanel createBookmarksPanel() {
@@ -55,6 +56,11 @@ public class MainFrame extends JFrame {
         Path bookmarksPath = Paths.get(System.getProperty("user.home"), ".shiori", "bookmarks.json");
         this.bookmarkStore = new BookmarkStore(bookmarksPath);
         reader.setBookmarkStore(bookmarkStore);
+
+        // Initialize reading progress store
+        Path progressPath = Paths.get(System.getProperty("user.home"), ".shiori", "reading_progress.json");
+        this.readingProgressStore = new reading.ReadingProgressStore(progressPath);
+        reader.setReadingProgressStore(readingProgressStore);
 
         MangaListPanel mangaList = new MangaListPanel(manga -> {
             this.currentManga = manga;
