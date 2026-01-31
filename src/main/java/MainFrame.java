@@ -26,8 +26,7 @@ public class MainFrame extends JFrame {
     private final MangaDexClient api = new MangaDexClient();
     private final ReaderPanel reader = new ReaderPanel();
     private Manga currentManga;
-    private final ChapterListPanel chapterList =
-            new ChapterListPanel(chapter -> reader.loadChapter(api, chapter, currentManga));
+    private ChapterListPanel chapterList;
     private BookmarkStore bookmarkStore;
     private reading.ReadingProgressStore readingProgressStore;
     private RecentMangasStore recentMangasStore;
@@ -82,6 +81,16 @@ public class MainFrame extends JFrame {
         } else {
             logger.error("Could not load logo");
         }
+
+        chapterList = new ChapterListPanel(
+                chapter -> reader.loadChapter(api, chapter, currentManga),
+                chapter -> this.updateDiscordChapter(
+                        currentManga.title(),
+                        "Chapter " + chapter.number()
+                )
+        );
+
+
 
 
 
@@ -190,6 +199,25 @@ public class MainFrame extends JFrame {
             logger.error("Failed to init Discord Rich Presence", e);
         }
     }
+
+    private void setDiscordIdle() {
+        if (discordCore == null) return; // make sure your Core instance exists
+
+        try (Activity activity = new Activity()) {
+            activity.setDetails("Idle in Shiori");   // main line
+            activity.setState("");                    // optional second line
+            discordCore.activityManager().updateActivity(activity);
+        }
+    }
+
+    public void updateDiscordChapter(String mangaTitle, String chapterTitle) {
+        if (discordActivity == null || discordCore == null) return;
+
+        discordActivity.setDetails(mangaTitle);
+        discordActivity.setState(chapterTitle);
+        discordCore.activityManager().updateActivity(discordActivity);
+    }
+
 
 
     private void setupMenu() {
@@ -388,4 +416,5 @@ public class MainFrame extends JFrame {
             }
         });
     }
+
 }
