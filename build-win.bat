@@ -5,7 +5,7 @@ set REPO=https://github.com/meowcat767/Shiori.git
 set CLONE_DIR=%~dp0ShioriNative
 set GRAALVM_ZIP=%~dp0graalvm.zip
 set GRAALVM_DIR=%~dp0graalvm
-set GRAALVM_URL=https://download.oracle.com/graalvm/25/latest/graalvm-jdk-25_windows-x64_bin.zip
+set GRAALVM_URL=https://download.oracle.com/graalvm/21/latest/graalvm-jdk-21_windows-x64_bin.zip
 
 REM --- Step 1: Download GraalVM if not exists ---
 if not exist "%GRAALVM_ZIP%" (

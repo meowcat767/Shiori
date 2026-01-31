@@ -11,20 +11,27 @@ import static java.nio.file.Files.walk;
 
 public class CacheManager {
 
-    private static final String CACHE_DIR = System.getProperty("user.home") + File.separator + ".shiori" + File.separator + "cache";
+    private final Path cacheDir;
 
     public CacheManager() {
-        File dir = new File(CACHE_DIR);
-        if (!dir.exists()) {
-            if (!dir.mkdirs()) {
-                System.err.println("Failed to create cache directory: " + CACHE_DIR);
-            }
+        // Use proper Path API for cross-platform compatibility
+        this.cacheDir = Paths.get(
+            System.getProperty("user.home"),
+            ".shiori",
+            "cache"
+        );
+        
+        try {
+            Files.createDirectories(cacheDir);
+        } catch (IOException e) {
+            System.err.println("Failed to create cache directory: " + cacheDir);
+            e.printStackTrace();
         }
     }
 
     public File getCachedFile(String url) {
         String filename = generateFilename(url);
-        return new File(CACHE_DIR, filename);
+        return cacheDir.resolve(filename).toFile();
     }
 
     public boolean isCached(String url) {
@@ -41,9 +48,8 @@ public class CacheManager {
 
     public void clearCache() {
         try {
-            Path cachePath = Paths.get(CACHE_DIR);
-            if (Files.exists(cachePath)) {
-                try (java.util.stream.Stream<Path> pathStream = walk(cachePath)) {
+            if (Files.exists(cacheDir)) {
+                try (java.util.stream.Stream<Path> pathStream = walk(cacheDir)) {
                     pathStream.sorted(Comparator.reverseOrder())
                             .map(Path::toFile)
                             .forEach(file -> {
@@ -52,7 +58,7 @@ public class CacheManager {
                                 }
                             });
                 }
-                Files.createDirectories(cachePath);
+                Files.createDirectories(cacheDir);
             }
         } catch (IOException e) {
             e.printStackTrace();
