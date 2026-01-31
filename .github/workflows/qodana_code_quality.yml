@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches:
+    branches: # Specify your branches here
       - master
 
 jobs:
@@ -14,23 +14,12 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-      # 1️⃣ Checkout the code
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 0
-
-      # 2️⃣ Run Qodana scan
-      - name: Qodana Scan
-        uses: JetBrains/qodana-action@v2025.3
+          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+          fetch-depth: 0  # a full history is required for pull request analysis
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2025.2
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-        with:
-          pr-mode: ${{ github.event_name == 'pull_request' }}
-          use-caches: true
-          post-pr-comment: true
-          use-annotations: true
-          upload-result: true
-          push-fixes: 'none'
-          args: --image jetbrains/qodana-jvm:2025.3-graalvm-21
+
