@@ -126,7 +126,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 800);
         setLocationRelativeTo(null);
-        ImageIcon icon = null;
+        ImageIcon icon;
         java.net.URL imgURL = MainFrame.class.getResource("/logo-trans.png");
         if (imgURL != null) {
             icon = new ImageIcon(imgURL);

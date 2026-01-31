@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
+import static java.nio.file.Files.walk;
+
 public class CacheManager {
 
     private static final String CACHE_DIR = System.getProperty("user.home") + File.separator + ".shiori" + File.separator + "cache";
@@ -39,7 +41,7 @@ public class CacheManager {
         try {
             Path cachePath = Paths.get(CACHE_DIR);
             if (Files.exists(cachePath)) {
-                Files.walk(cachePath)
+                walk(cachePath)
                         .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
