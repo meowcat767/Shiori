@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: # Specify your branches here
+    branches:
       - master
 
 jobs:
@@ -14,15 +14,22 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2025.2
+      # Checkout the repo (required for push-fixes and detection)
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          args: --apply-fixes
-          push-fixes: pull-request
+          fetch-depth: 0
+
+        # Run scan
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v2025.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-
-
-
-
-
+        with:
+          pr-mode: ${{ github.event_name == 'pull_request' }}
+          use-caches: true
+          post-pr-comment: true
+          use-annotations: true
+          upload-result: true
+          push-fixes: 'pull-request'
+          args: --within-docker=true --linter=qodana-jvm --apply-fixes
