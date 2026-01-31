@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
         // save bookmark location
         Path bookmarksPath = Paths.get(System.getProperty("user.home"), ".shiori", "bookmarks.json");
         BookmarkStore bookmarkStore = new BookmarkStore(bookmarksPath);
+        reader.setBookmarkStore(bookmarkStore);
 
         MangaListPanel mangaList = new MangaListPanel(manga -> {
             this.currentManga = manga;
@@ -96,15 +97,7 @@ public class MainFrame extends JFrame {
     }
 
     private void addBookmark() {
-        if (currentManga == null) {
-            JOptionPane.showMessageDialog(this,
-                    "Please select a manga first to add a bookmark.",
-                    "No Manga Selected",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        String mangaId = currentManga.id();
-
+        reader.addBookmark();
     }
 
     private void showAbout() {
