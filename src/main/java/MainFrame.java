@@ -32,8 +32,61 @@ public class MainFrame extends JFrame {
     private RecentMangasStore recentMangasStore;
     private RecentMangasPanel recentMangasPanel;
     long CLIENT_ID = 1402751935466963214L;
+
     private Core discordCore;
     private Activity discordActivity;
+
+    private void initDiscordPresence() {
+        try {
+            CreateParams params = new CreateParams();
+            params.setClientID(1402751935466963214L);
+            params.setFlags(CreateParams.getDefaultFlags());
+
+            discordCore = new Core(params);
+
+            discordActivity = new Activity();
+            discordActivity.setDetails("Idle");
+            discordActivity.setState("");
+
+
+
+            discordActivity.assets().setLargeImage("/logo-trans.png");
+            discordActivity.assets().setLargeText("Shiori");
+
+            discordCore.activityManager().updateActivity(discordActivity);
+
+            // Callback thread
+            Thread discordThread = new Thread(() -> {
+                while (!Thread.currentThread().isInterrupted()) {
+                    discordCore.runCallbacks();
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+            }, "Discord-RPC");
+            discordThread.setDaemon(true);
+            discordThread.start();
+
+        } catch (Exception e) {
+            logger.error("Failed to init Discord Rich Presence", e);
+        }
+    }
+
+    // Update manga/chapter dynamically
+    public void updateDiscordManga(model.Manga manga, model.Chapter chapter) {
+        if (discordActivity == null || discordCore == null || manga == null) return;
+
+        discordActivity.setDetails("Reading: " + manga.title());
+        if (chapter != null) {
+            discordActivity.setState("Chapter: " + chapter.number());
+        } else {
+            discordActivity.setState("Browsing Shiori");
+        }
+
+        discordCore.activityManager().updateActivity(discordActivity);
+    }
 
     private JPanel createBookmarksPanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -162,43 +215,11 @@ public class MainFrame extends JFrame {
 
         setupMenu();
         initDiscordPresence();
+
+
     }
 
-    private void initDiscordPresence() {
-        try {
-            CreateParams params = new CreateParams();
-            params.setClientID(1402751935466963214L);
-            params.setFlags(CreateParams.getDefaultFlags());
 
-            discordCore = new Core(params);
-
-            discordActivity = new Activity();
-            discordActivity.setDetails("Reading manga");
-            discordActivity.setState("Idle");
-
-            discordActivity.assets().setLargeImage("logo");
-            discordActivity.assets().setLargeText("Shiori");
-
-            discordCore.activityManager().updateActivity(discordActivity);
-
-            // Callback thread
-            Thread discordThread = new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted()) {
-                    discordCore.runCallbacks();
-                    try {
-                        Thread.sleep(16);
-                    } catch (InterruptedException e) {
-                        break;
-                    }
-                }
-            }, "Discord-RPC");
-            discordThread.setDaemon(true);
-            discordThread.start();
-
-        } catch (Exception e) {
-            logger.error("Failed to init Discord Rich Presence", e);
-        }
-    }
 
     private void setDiscordIdle() {
         if (discordCore == null) return; // make sure your Core instance exists
@@ -416,5 +437,6 @@ public class MainFrame extends JFrame {
             }
         });
     }
+
 
 }

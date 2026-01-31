@@ -150,6 +150,7 @@ public class ReaderPanel extends JPanel {
         scrollToTop();
         statusLabel.setText("Loading chapter: " + chapter.title() + "...");
 
+
         // Get saved page index before loading
         final int savedPageIndex = getSavedPageIndex(manga.id(), chapter.id());
 
@@ -176,6 +177,8 @@ public class ReaderPanel extends JPanel {
                                 image = ImageIO.read(imageIn);
                             }
                         }
+
+
                     }
 
                     current++;
