@@ -38,9 +38,11 @@ echo "Step 1: Building JAR with Maven..."
 mvn clean package -DskipTests
 
 # Find the JAR file
-JAR_FILE=$(find target -name "shiori-*.jar" -type f | head -n 1)
+JAR_FILE=$(find target -name "Shiori-*.jar" -type f | head -n 1)
 if [ -z "$JAR_FILE" ]; then
     echo "✗ No JAR file found in target directory!"
+    echo "Available files in target:"
+    ls -la target/*.jar 2>/dev/null || echo "No JAR files found"
     exit 1
 fi
 echo "✓ Found JAR: $JAR_FILE"
@@ -50,17 +52,19 @@ echo ""
 echo "Step 2: Building native image..."
 echo "      (This may take several minutes...)"
 
+# The --add-exports flags must be passed to the JVM running native-image
+# using --vm. prefix to pass options directly to the JVM
 native-image \
+    --vm.--add-exports=jdk.graal.compiler/jdk.graal.compiler.nodes.graphbuilderconf=ALL-UNNAMED \
+    --vm.--add-exports=jdk.graal.compiler/jdk.graal.compiler.nodes=ALL-UNNAMED \
+    --vm.--add-exports=jdk.graal.compiler/jdk.graal.compiler.api=ALL-UNNAMED \
+    --vm.--add-exports=jdk.graal.compiler/jdk.graal.compiler.util=ALL-UNNAMED \
+    --vm.--add-exports=jdk.graal.compiler/jdk.graal.compiler.word=ALL-UNNAMED \
     --no-fallback \
     --enable-all-security-services \
     --report-unsupported-elements-at-runtime \
-    --add-exports=jdk.graal.compiler/jdk.graal.compiler.nodes.graphbuilderconf=ALL-UNNAMED \
-    --add-exports=jdk.graal.compiler/jdk.graal.compiler.nodes=ALL-UNNAMED \
-    --add-exports=jdk.graal.compiler/jdk.graal.compiler.api=ALL-UNNAMED \
-    --add-exports=jdk.graal.compiler/jdk.graal.compiler.util=ALL-UNNAMED \
-    --add-exports=jdk.graal.compiler/jdk.graal.compiler.word=ALL-UNNAMED \
-    -jar "$JAR_FILE" \
-    shiori
+    -cp "$JAR_FILE" \
+    Main
 
 if [ -f "./shiori" ]; then
     echo ""

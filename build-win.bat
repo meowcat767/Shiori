@@ -67,8 +67,8 @@ native-image ^
     --add-exports=jdk.graal.compiler/jdk.graal.compiler.api=ALL-UNNAMED ^
     --add-exports=jdk.graal.compiler/jdk.graal.compiler.util=ALL-UNNAMED ^
     --add-exports=jdk.graal.compiler/jdk.graal.compiler.word=ALL-UNNAMED ^
-    -jar "%MAIN_JAR%" ^
-    shiori-native
+    -cp "%MAIN_JAR%" ^
+    Main
 
 REM --- Done ---
 echo Native image created: shiori-native.exe

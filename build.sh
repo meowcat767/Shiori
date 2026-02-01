@@ -27,7 +27,7 @@ if [ $? -eq 0 ]; then
     echo "    --add-exports=jdk.graal.compiler/jdk.graal.compiler.api=ALL-UNNAMED \\"
     echo "    --add-exports=jdk.graal.compiler/jdk.graal.compiler.util=ALL-UNNAMED \\"
     echo "    --add-exports=jdk.graal.compiler/jdk.graal.compiler.word=ALL-UNNAMED \\"
-    echo "    -cp target/shiori-1.0.jar Main"
+    echo "    -cp target/Shiori-1.0.jar Main"
 else
     echo "Build failed!"
     exit 1

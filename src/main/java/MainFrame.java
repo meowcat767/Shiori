@@ -145,6 +145,7 @@ public class MainFrame extends JFrame {
             logger.error("Could not load logo");
         }
 
+
         chapterList = new ChapterListPanel(
                 chapter -> reader.loadChapter(api, chapter, currentManga),
                 chapter -> this.updateDiscordChapter(
@@ -158,17 +159,17 @@ public class MainFrame extends JFrame {
 
 
         // save bookmark location
-        Path bookmarksPath = Paths.get(System.getProperty("user.home"), ".shiori", "bookmarks.json");
+        Path bookmarksPath = Paths.get(System.getProperty("user.home"), ".shiori", "bookmarks.shiomark");
         this.bookmarkStore = new BookmarkStore(bookmarksPath);
         reader.setBookmarkStore(bookmarkStore);
 
         // Initialize reading progress store
-        Path progressPath = Paths.get(System.getProperty("user.home"), ".shiori", "reading_progress.json");
+        Path progressPath = Paths.get(System.getProperty("user.home"), ".shiori", "reading_progress.shioprogress");
         this.readingProgressStore = new reading.ReadingProgressStore(progressPath);
         reader.setReadingProgressStore(readingProgressStore);
 
         // Initialize recent mangas store
-        Path recentMangasPath = Paths.get(System.getProperty("user.home"), ".shiori", "recent_mangas.json");
+        Path recentMangasPath = Paths.get(System.getProperty("user.home"), ".shiori", "recent_mangas.shiorecents");
         this.recentMangasStore = new RecentMangasStore(recentMangasPath);
 
         // Create recent mangas panel
@@ -254,8 +255,15 @@ public class MainFrame extends JFrame {
     private void setupMenu() {
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu helpMenu = new JMenu("Help");
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem optionsItem = new JMenuItem("Options");
+        optionsItem.addActionListener(e -> {showOptions.showOptions();});
+        JMenuItem exitItem = new JMenuItem("Exit");
+        fileMenu.add(optionsItem);
+        fileMenu.add(exitItem);
+        menuBar.add(fileMenu);
 
+        JMenu helpMenu = new JMenu("Help");
         JMenuItem shortcutsItem = new JMenuItem("Keyboard Shortcuts");
         shortcutsItem.addActionListener(e -> showShortcuts());
         helpMenu.add(shortcutsItem);
@@ -264,7 +272,6 @@ public class MainFrame extends JFrame {
         aboutItem.addActionListener(e -> showAbout());
         helpMenu.add(aboutItem);
 
-        menuBar.add(helpMenu);
 
         JMenu advancedMenu = new JMenu("Advanced");
         JMenuItem clearCacheItem = new JMenuItem("Clear Cache");
@@ -277,6 +284,8 @@ public class MainFrame extends JFrame {
         bookmarksItem.addActionListener(e -> {addBookmark();});
         mangaMenu.add(bookmarksItem);
         menuBar.add(mangaMenu);
+        menuBar.add(helpMenu);
+
 
         setJMenuBar(menuBar);
     }
