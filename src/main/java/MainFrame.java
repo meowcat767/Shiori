@@ -28,7 +28,8 @@ public class MainFrame extends JFrame {
     private Manga currentManga;
     private ChapterListPanel chapterList;
     private BookmarkStore bookmarkStore;
-    private reading.ReadingProgressStore readingProgressStore;
+    private reading.ReadingProgressStore readingProgressStore; // TODO: CONVERT TO LOCAL VARkiki
+    
     private RecentMangasStore recentMangasStore;
     private RecentMangasPanel recentMangasPanel;
     long CLIENT_ID = 1402751935466963214L;
@@ -45,12 +46,12 @@ public class MainFrame extends JFrame {
             discordCore = new Core(params);
 
             discordActivity = new Activity();
-            discordActivity.setDetails("Idle");
+            discordActivity.setDetails("Idling");
             discordActivity.setState("");
 
 
 
-            discordActivity.assets().setLargeImage("512");
+            discordActivity.assets().setLargeImage("512"); // ico is called "512"
             discordActivity.assets().setLargeText("Shiori");
 
             discordCore.activityManager().updateActivity(discordActivity);
@@ -257,8 +258,28 @@ public class MainFrame extends JFrame {
 
         JMenu fileMenu = new JMenu("File");
         JMenuItem optionsItem = new JMenuItem("Options");
-        optionsItem.addActionListener(e -> {showOptions.showOptions();});
+        optionsItem.addActionListener(e -> {showOptions.showOptions(); logger.info("Trying to fire showOptions.showOptions()...");});
         JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        JMenuItem statsItem = new JMenuItem("Statistics");
+        statsItem.addActionListener(e -> {
+            if (currentManga == null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No manga selected",
+                        "Statistics",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
+
+            new MangaStatisticsWindow(
+                    api,
+                    currentManga.id(),
+                    currentManga.title()
+            );
+        });
+        fileMenu.add(statsItem);
         fileMenu.add(optionsItem);
         fileMenu.add(exitItem);
         menuBar.add(fileMenu);

@@ -3,6 +3,7 @@ package api;
 import com.fasterxml.jackson.databind.*;
 import java.net.http.*;
 import java.net.*;
+import java.nio.channels.ScatteringByteChannel;
 import java.util.*;
 import model.*;
 
@@ -95,5 +96,14 @@ public class MangaDexClient {
             urls.add(base + "/data/" + hash + "/" + file.asText());
         }
         return urls;
+    }
+
+    public JsonNode getMangaStats(String mangaId) throws Exception {
+        String url = API + "/statistics/manga/" + mangaId;
+        JsonNode root = get(url);
+
+        return root
+                .path("statistics")
+                .path(mangaId);
     }
 }
