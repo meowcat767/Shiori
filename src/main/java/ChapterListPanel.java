@@ -12,11 +12,9 @@ public class ChapterListPanel extends JPanel {
     private final JList<Chapter> list = new JList<>(model);
     private final MangaDexClient api = new MangaDexClient();
     private final Consumer<Chapter> onSelect;
-    private final Consumer<Chapter> onDiscordUpdate;
 
-    public ChapterListPanel(Consumer<Chapter> onSelect, Consumer<Chapter> onDiscordUpdate) {
+    public ChapterListPanel(Consumer<Chapter> onSelect) {
         this.onSelect = onSelect;
-        this.onDiscordUpdate = onDiscordUpdate;
 
         setLayout(new BorderLayout());
         add(new JScrollPane(list), BorderLayout.CENTER);
@@ -24,10 +22,7 @@ public class ChapterListPanel extends JPanel {
         list.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && list.getSelectedValue() != null) {
                 if (onSelect != null) {
-                    onSelect.accept(list.getSelectedValue()); // existing behavior
-                }
-                if (onDiscordUpdate != null) {
-                    onDiscordUpdate.accept(list.getSelectedValue()); // new: updates Discord
+                    onSelect.accept(list.getSelectedValue());
                 }
             }
         });
@@ -63,10 +58,6 @@ public class ChapterListPanel extends JPanel {
         int index = list.getSelectedIndex();
         if (index != -1 && index < model.getSize() - 1) {
             list.setSelectedIndex(index + 1);
-            Chapter selected = list.getSelectedValue();
-            if (selected != null && onDiscordUpdate != null) {
-                onDiscordUpdate.accept(selected);
-            }
         }
     }
 
@@ -74,10 +65,6 @@ public class ChapterListPanel extends JPanel {
         int index = list.getSelectedIndex();
         if (index > 0) {
             list.setSelectedIndex(index - 1);
-            Chapter selected = list.getSelectedValue();
-            if (selected != null && onDiscordUpdate != null) {
-                onDiscordUpdate.accept(selected);
-            }
         }
     }
-    }
+}

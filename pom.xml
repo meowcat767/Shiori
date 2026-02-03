@@ -42,20 +42,7 @@
             <artifactId>log4j-api</artifactId>
             <version>2.25.3</version>
         </dependency>
-        <!-- discord sdk -->
-        <dependency>
-            <groupId>com.github.JnCrMx</groupId>
-            <artifactId>discord-game-sdk4j</artifactId>
-            <version>-08b2bf45a6-1</version>
-            <scope>compile</scope>
-        </dependency>
 
-        <!-- GSON for Discord SDK -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
-        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -114,8 +101,6 @@
                                     <include>com.fasterxml.jackson.core:jackson-annotations</include>
                                     <include>org.apache.logging.log4j:log4j-core</include>
                                     <include>org.apache.logging.log4j:log4j-api</include>
-                                    <include>com.github.JnCrMx:discord-game-sdk4j</include>
-                                    <include>com.google.code.gson:gson</include>
                                 </includes>
                             </artifactSet>
                             <filters>
