@@ -75,7 +75,7 @@ public class MainFrame extends JFrame {
             icon = new ImageIcon(imgURL);
             MainFrame.this.setIconImage(icon.getImage());
         } else {
-            logger.error("Could not load logo");
+            logger.error("Could not load logo for MainFrame()");
         }
 
 
@@ -236,7 +236,7 @@ public class MainFrame extends JFrame {
             Image scaledImage = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
             icon = new ImageIcon(scaledImage);  // wrap it back into an ImageIcon
         } else {
-            logger.error("Could not load logo");
+            logger.error("Could not load logo for showAbout()");
         }
         UIManager.put("Panel.background", Color.BLACK);
         UIManager.put("OptionPane.background", Color.BLACK);
