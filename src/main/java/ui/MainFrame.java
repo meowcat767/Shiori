@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
 
     private final MangaDexClient api = new MangaDexClient();
     private final ReaderPanel reader = new ReaderPanel();
+    private final showOptions options = new showOptions();
     private Manga currentManga;
     private ChapterListPanel chapterList;
     private BookmarkStore bookmarkStore;
@@ -120,7 +121,7 @@ public class MainFrame extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
             }
-        });
+        }, options);
 
         MangaListPanel mangaList = new MangaListPanel(manga -> {
             this.currentManga = manga;

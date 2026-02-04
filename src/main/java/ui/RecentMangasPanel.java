@@ -14,13 +14,15 @@ public class RecentMangasPanel extends JPanel {
     private final JList<String> list = new JList<>(model);
     private final RecentMangasStore store;
     private final Consumer<String> onSelect; // mangaId consumer
+    private final showOptions options;
 
     private final JPanel contentPanel;
     private boolean showingEmpty = false;
 
-    public RecentMangasPanel(RecentMangasStore store, Consumer<String> onSelect) {
+    public RecentMangasPanel(RecentMangasStore store, Consumer<String> onSelect, showOptions options) {
         this.store = store;
         this.onSelect = onSelect;
+        this.options = options;
 
         setLayout(new BorderLayout());
 
@@ -67,8 +69,39 @@ public class RecentMangasPanel extends JPanel {
             }
         });
 
+        // Set initial enabled state based on caching
+        updateEnabledState();
+
         // Initial load
         refreshList();
+    }
+
+    /**
+     * Update the enabled state based on caching option
+     */
+    private void updateEnabledState() {
+        boolean cachingEnabled = options != null && options.isCachingEnabled();
+        setEnabled(cachingEnabled);
+        
+        // Update toolbar buttons
+        for (Component c : getComponents()) {
+            if (c instanceof JPanel toolbar) {
+                for (Component button : toolbar.getComponents()) {
+                    if (button instanceof JButton) {
+                        button.setEnabled(cachingEnabled);
+                    }
+                }
+            }
+        }
+        
+        // Update list
+        list.setEnabled(cachingEnabled);
+        
+        // Update message
+        CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
+        if (!cachingEnabled) {
+            cardLayout.show(contentPanel, "empty");
+        }
     }
 
     /**
@@ -129,7 +162,7 @@ public class RecentMangasPanel extends JPanel {
      * No-arg constructor for testing
      */
     public RecentMangasPanel() {
-        this(null, id -> {});
+        this(null, id -> {}, null);
     }
 }
 
