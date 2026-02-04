@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MainFrame extends JFrame {
 
@@ -148,9 +149,12 @@ public class MainFrame extends JFrame {
 
         JPanel localPanel = new JPanel(new BorderLayout());
         JButton addPdf = new JButton("Add PDF…");
-
         addPdf.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
+            chooser.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF files", "pdf");
+            chooser.addChoosableFileFilter(filter);
+            chooser.setFileFilter(filter);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 LocalPDFLoader.loadIntoReader(
                         chooser.getSelectedFile(),
