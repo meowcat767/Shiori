@@ -254,7 +254,7 @@ public class MainFrame extends JFrame {
                 this,
                 "Shiori - A Simple Manga Reader\n" +
                         "Powered by MangaDex API\n\n" +
-                        "Logo by tevevision\n" +
+                        "Logo by tevevision\n Written by meowcat767\n" +
                 "Version 0.5a",
                 "About Shiori",
                 JOptionPane.INFORMATION_MESSAGE,
