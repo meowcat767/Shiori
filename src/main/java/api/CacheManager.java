@@ -6,20 +6,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-
 import static java.nio.file.Files.walk;
+import ui.showOptions;
 
 public class CacheManager {
 
     private final Path cacheDir;
+    private showOptions options;
 
     public CacheManager() {
+        this.options = options;
         // Use proper Path API for cross-platform compatibility
         this.cacheDir = Paths.get(
             System.getProperty("user.home"),
             ".shiori",
             "cache"
         );
+
         
         try {
             Files.createDirectories(cacheDir);
@@ -35,14 +38,17 @@ public class CacheManager {
     }
 
     public boolean isCached(String url) {
+        if(!options.isCachingEnabled()) {return false;}
         return getCachedFile(url).exists();
     }
 
     public void saveToCache(String url, byte[] data) throws IOException {
+        if(!options.isCachingEnabled()) {return;}
         Files.write(getCachedFile(url).toPath(), data);
     }
 
     public byte[] getFromCache(String url) throws IOException {
+        if(!options.isCachingEnabled()) {return null;}
         return Files.readAllBytes(getCachedFile(url).toPath());
     }
 

@@ -1,3 +1,5 @@
+package ui;
+
 import model.RecentManga;
 import recent.RecentMangasStore;
 

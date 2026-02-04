@@ -1,6 +1,7 @@
+package ui;
+
 import api.CacheManager;
 import api.MangaDexClient;
-import model.Bookmark;
 import model.Chapter;
 
 import javax.swing.*;

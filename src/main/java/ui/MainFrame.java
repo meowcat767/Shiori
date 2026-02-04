@@ -1,3 +1,5 @@
+package ui;
+
 import api.MangaDexClient;
 import bookmark.BookmarkStore;
 import model.Bookmark;
@@ -14,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.net.*;
 
 public class MainFrame extends JFrame {
 
@@ -75,7 +76,7 @@ public class MainFrame extends JFrame {
             icon = new ImageIcon(imgURL);
             MainFrame.this.setIconImage(icon.getImage());
         } else {
-            logger.error("Could not load logo for MainFrame()");
+            logger.error("Could not load logo for ui.MainFrame()");
         }
 
 
@@ -164,7 +165,8 @@ public class MainFrame extends JFrame {
 
         JMenu fileMenu = new JMenu("File");
         JMenuItem optionsItem = new JMenuItem("Options");
-        optionsItem.addActionListener(e -> {showOptions.showOptions(); logger.info("Trying to fire showOptions.showOptions()...");});
+        optionsItem.addActionListener(e -> {
+            showOptions.showOptions(); logger.info("Trying to fire ui.showOptions.ui.showOptions()...");});
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(e -> System.exit(0));
         JMenuItem statsItem = new JMenuItem("Statistics");

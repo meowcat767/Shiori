@@ -1,3 +1,5 @@
+package ui;
+
 import api.MangaDexClient;
 import model.Chapter;
 

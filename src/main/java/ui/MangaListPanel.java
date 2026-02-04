@@ -1,4 +1,4 @@
-
+package ui;
 
 import api.MangaDexClient;
 import model.Manga;

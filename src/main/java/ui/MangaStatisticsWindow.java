@@ -1,10 +1,10 @@
+package ui;
+
 import api.MangaDexClient;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.swing.*;
 import java.awt.*;
-import api.MangaDexClient;
-import model.*;
 
 public class MangaStatisticsWindow {
 

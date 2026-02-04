@@ -1,6 +1,8 @@
 import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ui.MainFrame;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,9 +27,9 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             try {
                 new MainFrame().setVisible(true);
-                logger.info("MainFrame initialized and displayed");
+                logger.info("ui.MainFrame initialized and displayed");
             } catch (Exception e) {
-                logger.error("Failed to initialize MainFrame", e);
+                logger.error("Failed to initialize ui.MainFrame", e);
             }
         });
     }
