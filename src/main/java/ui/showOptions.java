@@ -2,34 +2,45 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
-/**
- * i know this file has a stupid name.
- * */
+import java.util.prefs.Preferences;
 
 public class showOptions {
-    public static void showOptions() {
-        initOptionsUI();
 
+    private static final String KEY_CACHE = "cachingEnabled";
+
+    private final Preferences prefs =
+            Preferences.userNodeForPackage(showOptions.class);
+
+    private boolean iWantCaching;
+
+    public showOptions() {
+        // Load persisted value (default = true)
+        iWantCaching = prefs.getBoolean(KEY_CACHE, true);
     }
 
-    private static boolean iWantCaching = true;
-    public static void initOptionsUI() {
+    public void showOptions() {
+        initOptionsUI();
+    }
+
+    private void initOptionsUI() {
         JFrame frame = new JFrame("Options");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new FlowLayout());
-        JCheckBox c1 = new JCheckBox("Enable Caching", true);
+
+        JCheckBox c1 = new JCheckBox("Enable Caching", iWantCaching);
+
         c1.addActionListener(e -> {
             iWantCaching = c1.isSelected();
+            prefs.putBoolean(KEY_CACHE, iWantCaching);
         });
+
         frame.add(c1);
         frame.pack();
-        frame.setLocationRelativeTo(null); // this centers the window on spawn
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
     public boolean isCachingEnabled() {
         return iWantCaching;
     }
-
-
 }
