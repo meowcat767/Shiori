@@ -1,5 +1,7 @@
 package ui;
 
+import api.LocalPDFLoader;
+import api.LocalPDFStore;
 import api.MangaDexClient;
 import bookmark.BookmarkStore;
 import model.Bookmark;
@@ -12,6 +14,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
@@ -104,6 +107,14 @@ public class MainFrame extends JFrame {
         Path recentMangasPath = Paths.get(System.getProperty("user.home"), ".shiori", "recent_mangas.shiorecents");
         this.recentMangasStore = new RecentMangasStore(recentMangasPath);
 
+        // Initialize pdf store path
+        Path pdfStorePath = Paths.get(
+                System.getProperty("user.home"),
+                ".shiori",
+                "local_pdfs.json"
+        );
+        LocalPDFStore pdfStore = new LocalPDFStore(pdfStorePath);
+
         // Create recent mangas panel
         this.recentMangasPanel = new RecentMangasPanel(recentMangasStore, mangaId -> {
             // Load manga when selected from recent list
@@ -135,9 +146,26 @@ public class MainFrame extends JFrame {
             }
         });
 
+        JPanel localPanel = new JPanel(new BorderLayout());
+        JButton addPdf = new JButton("Add PDF…");
+
+        addPdf.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                LocalPDFLoader.loadIntoReader(
+                        chooser.getSelectedFile(),
+                        reader,
+                        pdfStore
+                );
+            }
+        });
+
+        localPanel.add(addPdf, BorderLayout.NORTH);
+
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Manga", mangaList);
         tabs.add("Chapters", chapterList);
+        tabs.add("Local", localPanel);
         tabs.add("Recent", recentMangasPanel);
         tabs.add("Bookmarks", createBookmarksPanel());
 

@@ -136,8 +136,6 @@ public class ReaderPanel extends JPanel {
     }
 
     public void clearPages() {
-        if (currentWorker != null) currentWorker.cancel(true);
-
         pagesPanel.removeAll();
         pagesPanel.revalidate();
         pagesPanel.repaint();
@@ -524,5 +522,22 @@ public class ReaderPanel extends JPanel {
 
         currentWorker.execute();
     }
+
+
+
+    public void addPage(ImageIcon icon) {
+        JLabel label = new JLabel(scaleIcon(icon));
+        label.putClientProperty("originalIcon", icon);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setOpaque(true);
+        pagesPanel.add(label);
+    }
+
+    public void onLoadComplete(String title) {
+        statusLabel.setText("Loaded: " + title);
+        currentPageIndex = 0;
+        scrollToTop();
+    }
+
 }
 
