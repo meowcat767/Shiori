@@ -166,7 +166,9 @@ public class MainFrame extends JFrame {
         JMenu fileMenu = new JMenu("File");
         JMenuItem optionsItem = new JMenuItem("Options");
         optionsItem.addActionListener(e -> {
-            showOptions.showOptions(); logger.info("Trying to fire ui.showOptions.ui.showOptions()...");});
+            showOptions options = new showOptions();
+            options.showOptions();
+            logger.info("Trying to fire ui.showOptions.ui.showOptions()...");});
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(e -> System.exit(0));
         JMenuItem statsItem = new JMenuItem("Statistics");
