@@ -98,14 +98,6 @@ public class MangaDexClient {
     }
 
     /**
-     * Build content rating query parameter for NSFW content.
-     */
-    private String getContentRatingParams(boolean nsfwEnabled) {
-        if (nsfwEnabled) {
-            return "&contentRating[]=pornographic";
-        }
-        return "";
-    }
 
     /**
      * Search manga using Python implementation if available, fallback to Java.
@@ -114,19 +106,9 @@ public class MangaDexClient {
         return searchManga(title, false);
     }
 
-    /**
-     * Search manga with optional NSFW content rating.
-     */
     public List<Manga> searchManga(String title, boolean nsfwEnabled) throws Exception {
         if (pythonAvailable) {
             try {
-                interpreter.set("title", title);
-                interpreter.set("nsfw_enabled", nsfwEnabled);
-                interpreter.exec(
-                    "results = mangadex_api.search_manga(title, nsfw_enabled)\n" +
-                    "import json\n" +
-                    "results_json = json.dumps(results)"
-                );
 
                 String jsonStr = interpreter.get("results_json").toString();
                 if (jsonStr != null && !jsonStr.isEmpty()) {
@@ -153,8 +135,6 @@ public class MangaDexClient {
         String url = API + "/manga?limit=20&title=" +
                 URLEncoder.encode(title, "UTF-8");
 
-        // Add content rating for NSFW
-        url += getContentRatingParams(nsfwEnabled);
 
         JsonNode root = get(url);
         List<Manga> result = new ArrayList<>();
@@ -226,13 +206,6 @@ public class MangaDexClient {
     public List<Chapter> getChapters(String mangaId, boolean nsfwEnabled) throws Exception {
         if (pythonAvailable) {
             try {
-                interpreter.set("manga_id", mangaId);
-                interpreter.set("nsfw_enabled", nsfwEnabled);
-                interpreter.exec(
-                    "chapters = mangadex_api.get_chapters(manga_id, nsfw_enabled)\n" +
-                    "import json\n" +
-                    "chapters_json = json.dumps(chapters)"
-                );
 
                 String jsonStr = interpreter.get("chapters_json").toString();
                 if (jsonStr != null && !jsonStr.isEmpty()) {
@@ -260,8 +233,6 @@ public class MangaDexClient {
                 "&translatedLanguage[]=en" +
                 "&order[chapter]=asc";
 
-        // Add content rating for NSFW
-        url += getContentRatingParams(nsfwEnabled);
 
         JsonNode root = get(url);
         List<Chapter> chapters = new ArrayList<>();
