@@ -1,5 +1,5 @@
 # Yomikomu - Manga Reader Desktop Application
-[![Qodana](https://github.com/meowcat767/Yomikomu/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/meowcat767/Yomikomu/actions/workflows/qodana_code_quality.yml) [![CodeQL Advanced](https://github.com/meowcat767/Yomikomu/actions/workflows/codeql.yml/badge.svg)](https://github.com/meowcat767/Yomikomu/actions/workflows/codeql.yml)
+[![Qodana](https://github.com/Yomikomu/Yomikomu/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/Yomikomu/Yomikomu/actions/workflows/qodana_code_quality.yml)[![CodeQL Advanced](https://github.com/Yomikomu/Yomikomu/actions/workflows/codeql.yml/badge.svg)](https://github.com/Yomikomu/Yomikomu/actions/workflows/codeql.yml)[![Dependabot Updates](https://github.com/Yomikomu/Yomikomu/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/Yomikomu/Yomikomu/actions/workflows/dependabot/dependabot-updates)
 
 A simple desktop manga reader application powered by the MangaDex API. Built with Java and Python, featuring a clean Swing-based UI with caching, bookmarks, and keyboard navigation.
 
