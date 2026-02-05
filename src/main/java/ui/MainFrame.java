@@ -308,11 +308,11 @@ public class MainFrame extends JFrame {
 
         JOptionPane.showMessageDialog(
                 this,
-                "Yomikumu- A Simple Manga Reader\n" +
+                "Yomikomu- A Simple Manga Reader\n" +
                         "Powered by MangaDex API\n\n" +
                         "Logo by tevevision\n Written by meowcat767\n" +
                 "Version 1.0",
-                "About Yomikumu",
+                "About Yomikomu",
                 JOptionPane.INFORMATION_MESSAGE,
                 icon
         );

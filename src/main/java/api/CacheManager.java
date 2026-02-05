@@ -19,7 +19,7 @@ public class CacheManager {
         // Use proper Path API for cross-platform compatibility
         this.cacheDir = Paths.get(
             System.getProperty("user.home"),
-            ".yomikumu",
+            ".yomikomu",
             "cache"
         );
 

@@ -1,5 +1,5 @@
-# Yomikumu - Manga Reader Desktop Application
-[![Qodana](https://github.com/meowcat767/Yomikumu/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/meowcat767/Yomikumu/actions/workflows/qodana_code_quality.yml) [![CodeQL Advanced](https://github.com/meowcat767/Yomikumu/actions/workflows/codeql.yml/badge.svg)](https://github.com/meowcat767/Yomikumu/actions/workflows/codeql.yml)
+# Yomikomu - Manga Reader Desktop Application
+[![Qodana](https://github.com/meowcat767/Yomikomu/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/meowcat767/Yomikomu/actions/workflows/qodana_code_quality.yml) [![CodeQL Advanced](https://github.com/meowcat767/Yomikomu/actions/workflows/codeql.yml/badge.svg)](https://github.com/meowcat767/Yomikomu/actions/workflows/codeql.yml)
 
 A simple desktop manga reader application powered by the MangaDex API. Built with Java and Python, featuring a clean Swing-based UI with caching, bookmarks, and keyboard navigation.
 
@@ -26,8 +26,8 @@ A simple desktop manga reader application powered by the MangaDex API. Built wit
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Yomikumu.git
-cd Yomikumu
+git clone https://github.com/yourusername/Yomikomu.git
+cd Yomikomu
 
 # Build the project
 mvn clean package
@@ -75,11 +75,11 @@ mvn exec:java
 
 - Click **Manga → Add Bookmark** to save your current reading position
 - View bookmarks in the "Bookmarks" tab
-- Bookmarks are stored in `~/.Yomikumu/bookmarks.json`
+- Bookmarks are stored in `~/.Yomikomu/bookmarks.json`
 
 ### Cache Management
 
-- Images are cached in `~/.Yomikumu/cache/`
+- Images are cached in `~/.Yomikomu/cache/`
 - Use **Advanced → Clear Cache** to clear cached images
 
 
@@ -116,10 +116,10 @@ void clearCache()
 
 ## Configuration
 
-Yomikumu stores configuration in the user's home directory:
+Yomikomu stores configuration in the user's home directory:
 
-- **Bookmarks**: `~/.Yomikumu/bookmarks.json`
-- **Cache**: `~/.Yomikumu/cache/`
+- **Bookmarks**: `~/.Yomikomu/bookmarks.json`
+- **Cache**: `~/.Yomikomu/cache/`
 
 ## Roadmap
 
