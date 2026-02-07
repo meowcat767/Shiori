@@ -32,6 +32,7 @@ public class Main {
         // Initialize plugin system
         initializePlugins();
 
+
         logger.info("Starting Shiori manga reader application");
         SwingUtilities.invokeLater(() -> {
             try {

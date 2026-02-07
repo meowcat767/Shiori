@@ -10,7 +10,11 @@ import java.util.concurrent.*;
 public class DiscordRPCService {
     private Core core;
     private ScheduledExecutorService callBackExecutor;
-    private long clientId = 1402751935466963214L;
+
+    /**
+     * Standard service needed for Discord Social SDK's RPC.
+     * @param clientId - Client ID from Discord (i.e 123456789L)
+     * */
 
     public void start(long clientId) {
         CreateParams params = new CreateParams();

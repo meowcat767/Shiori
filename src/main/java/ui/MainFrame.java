@@ -12,6 +12,7 @@ import plugin.PluginContext;
 import plugin.PluginManager;
 import plugin.ShioriPlugin;
 import recent.RecentMangasStore;
+import services.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -247,6 +248,9 @@ public class MainFrame extends JFrame {
 
         setupZoomKeys();
         setupNavigationKeys();
+        DiscordRPCService rpc = new DiscordRPCService();
+        rpc.start(1402751935466963214L);
+
 
         tabs.setMinimumSize(new Dimension(300, 100));
         reader.setMinimumSize(new Dimension(500, 100));
@@ -331,6 +335,8 @@ public class MainFrame extends JFrame {
         fileMenu.add(optionsItem);
         fileMenu.add(exitItem);
         menuBar.add(fileMenu);
+
+
 
         // Plugins menu
         pluginsMenu = new JMenu("Plugins");
