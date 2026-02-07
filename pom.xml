@@ -68,7 +68,14 @@
             <artifactId>pdfbox</artifactId>
             <version>3.0.6</version>
         </dependency>
-    </dependencies>
+
+        <dependency>
+            <groupId>com.github.JnCrMx</groupId>
+            <artifactId>discord-game-sdk4j</artifactId>
+            <version>v1.0.0</version>
+        </dependency>
+
+</dependencies>
 
 
 
