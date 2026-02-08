@@ -135,5 +135,7 @@ See [TODO.md](TODO.md) for planned features and improvements.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Catbell Open License - see the LICENSE file for details.
+
+(C) Catbell Software, 2026
 
