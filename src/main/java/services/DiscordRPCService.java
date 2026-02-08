@@ -68,7 +68,7 @@ public class DiscordRPCService {
         }
         
         try(Activity activity = new Activity()) {
-            activity.setDetails("Reading with Yomikomu");
+            activity.setDetails("Idling");
             activity.assets().setLargeImage("512");
             activity.timestamps().setStart(Instant.now());
             core.activityManager().updateActivity(activity);
@@ -94,7 +94,7 @@ public class DiscordRPCService {
             if (isReading) {
                 activity.setDetails(mangaTitle + " - " + chapterInfo);
             } else {
-                activity.setDetails("Browsing: " + mangaTitle);
+                activity.setDetails("Reading: " + mangaTitle);
             }
             activity.assets().setLargeImage("512");
             activity.timestamps().setStart(Instant.now());
