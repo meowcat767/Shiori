@@ -128,6 +128,7 @@
                                     <include>org.apache.logging.log4j:log4j-core</include>
                                     <include>org.apache.logging.log4j:log4j-api</include>
                                     <include>org.python:jython-standalone</include>
+                                    <include>com.github.JnCrMx:discord-game-sdk4j</include>
                                 </includes>
                             </artifactSet>
                             <filters>

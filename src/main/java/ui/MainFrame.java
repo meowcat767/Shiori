@@ -43,6 +43,9 @@ public class MainFrame extends JFrame {
     
     private RecentMangasStore recentMangasStore;
     private RecentMangasPanel recentMangasPanel;
+    
+    // Discord RPC service
+    private DiscordRPCService discordRPCService;
 
     // Plugin system components
     private final PluginManager pluginManager;
@@ -123,6 +126,17 @@ public class MainFrame extends JFrame {
     private void initializeUI() {
         SplashScreen splash = new SplashScreen();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        // Add window close listener for cleanup
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if (discordRPCService != null) {
+                    discordRPCService.stop();
+                    logger.info("Discord RPC service stopped on application close");
+                }
+            }
+        });
         setSize(1200, 800);
         setLocationRelativeTo(null);
 
@@ -248,8 +262,11 @@ public class MainFrame extends JFrame {
 
         setupZoomKeys();
         setupNavigationKeys();
-        DiscordRPCService rpc = new DiscordRPCService();
-        rpc.start(1402751935466963214L);
+        
+        // Initialize and start Discord RPC service
+        discordRPCService = new DiscordRPCService();
+        discordRPCService.start(1402751935466963214L);
+        discordRPCService.initRpc();
 
 
         tabs.setMinimumSize(new Dimension(300, 100));
@@ -282,6 +299,35 @@ public class MainFrame extends JFrame {
         if (pluginManager != null) {
             pluginManager.notifyMangaLoaded(manga);
         }
+        
+        // Update Discord RPC with manga information
+        updateDiscordRPC(manga, null);
+    }
+    
+    /**
+     * Update Discord Rich Presence with current manga and chapter information.
+     * @param manga - The manga being read (null to clear)
+     * @param chapter - The current chapter (null if no chapter selected)
+     */
+    private void updateDiscordRPC(Manga manga, model.Chapter chapter) {
+        if (discordRPCService == null || !discordRPCService.isReady()) {
+            return;
+        }
+        
+        if (manga == null) {
+            discordRPCService.clearActivity();
+            return;
+        }
+        
+        String mangaTitle = manga.title();
+        String chapterInfo = "Chapters available";
+        
+        if (chapter != null) {
+            chapterInfo = chapter.title() != null ? chapter.title() : "Chapter " + chapter.number();
+        }
+        
+        discordRPCService.updateActivity(mangaTitle, chapterInfo, chapter != null);
+        logger.debug("Updated Discord RPC: {} - {}", mangaTitle, chapterInfo);
     }
 
     /**
