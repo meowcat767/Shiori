@@ -379,20 +379,6 @@ public class MainFrame extends JFrame {
 
         JMenu helpMenu = new JMenu("Help");
         JMenuItem shortcutsItem = new JMenuItem("Keyboard Shortcuts");
-        JMenuItem docsItem = new JMenuItem("Documentation");
-        docsItem.addActionListener(e -> {
-            if (Desktop.isDesktopSupported()) {
-                Desktop desktop = Desktop.getDesktop();
-                try {
-                    desktop.browse(URI.create("https://shiori-docs.meowcat.site"));
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "Failed to open documentation", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Opening URLS is not supported on this platform", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        helpMenu.add(docsItem);
         shortcutsItem.addActionListener(e -> showShortcuts());
         helpMenu.add(shortcutsItem);
 
@@ -483,11 +469,12 @@ public class MainFrame extends JFrame {
 
         JOptionPane.showMessageDialog(
                 this,
-                "Shiori Manga Reader\n" +
+                "Yomikomu Manga Reader\n" +
                         "Powered by MangaDex API\n\n" +
-                        "Logo by tevevision\n Written by meowcat767\n" +
+                        "Logo by tevevision\nWritten by meowcat767\n" +
+                        "(C) Catbell Software 2026\n" +
                 "Version 1.1",
-                "About Shiori",
+                "About Yomikomiu",
                 JOptionPane.INFORMATION_MESSAGE,
                 icon
         );
