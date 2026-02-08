@@ -361,15 +361,27 @@ public class PluginManagerDialog extends JDialog {
      * Extract a ZIP file.
      */
     private void extractZip(Path zipPath, Path destDir) throws Exception {
-        try (java.util.zip.ZipInputStream zis = 
+        // Normalize destination directory once to prevent Zip Slip (directory traversal) attacks
+        Path normalizedDestDir = destDir.toAbsolutePath().normalize();
+        try (java.util.zip.ZipInputStream zis =
                 new java.util.zip.ZipInputStream(Files.newInputStream(zipPath))) {
             java.util.zip.ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
-                Path entryPath = destDir.resolve(entry.getName());
+                // Resolve the entry path against the destination directory and normalize it
+                Path entryPath = normalizedDestDir.resolve(entry.getName()).normalize();
+
+                // Ensure that the normalized entry path is still within the destination directory
+                if (!entryPath.startsWith(normalizedDestDir)) {
+                    throw new Exception("Bad zip entry (potential Zip Slip): " + entry.getName());
+                }
+
                 if (entry.isDirectory()) {
                     Files.createDirectories(entryPath);
                 } else {
-                    Files.createDirectories(entryPath.getParent());
+                    Path parent = entryPath.getParent();
+                    if (parent != null) {
+                        Files.createDirectories(parent);
+                    }
                     Files.copy(zis, entryPath, StandardCopyOption.REPLACE_EXISTING);
                 }
             }
